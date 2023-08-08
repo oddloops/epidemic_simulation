@@ -1,0 +1,3 @@
+# Ignore IDE outputs
+.vs/*
+out/*
