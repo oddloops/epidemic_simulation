@@ -6,13 +6,13 @@
 enum class HealthStatus
 {
 	Normal,
-	Infected,
 	Immunocompromised,
 	ChronicDisease,
 	UnderlyingCondition,
 	Elderly,
 	Child,
 	Pregnacy,
+	Infected,
 	Deceased
 };
 
