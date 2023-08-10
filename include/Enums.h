@@ -25,9 +25,9 @@ enum class InfectionStatus
 	Quarantined,
 	MildSymptoms,
 	SevereSymptoms,
-	CriticalCondition,
+	CriticalCondition,/*
 	Hospitalized,
-	ICU,
+	ICU,*/
 	Recovered,
 	Deceased
 };
