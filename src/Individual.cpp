@@ -1,11 +1,12 @@
 #include "Individual.h"
 
-Individual::Individual(int individualId, int individualAge, HealthStatus hStatus, InfectionStatus iStatus)
+Individual::Individual(int individualId, int individualAge, HealthStatus hStatus, InfectionStatus iStatus, int infectedDays = 0)
 {
 	id = individualId;
 	age = individualAge;
 	healthStatus = hStatus;
 	infectionStatus = iStatus;
+	daysInfected = infectedDays;
 }
 
 // Define getter methods
@@ -29,6 +30,11 @@ InfectionStatus Individual::getInfectionStatus() const
 	return infectionStatus;
 }
 
+int Individual::getDaysInfected() const
+{
+	return daysInfected;
+}
+
 // Define setter methods
 void Individual::updateHealthStatus(HealthStatus newHStatus)
 {
@@ -38,4 +44,12 @@ void Individual::updateHealthStatus(HealthStatus newHStatus)
 void Individual::updateInfectionStatus(InfectionStatus newIStatus)
 {
 	infectionStatus = newIStatus;
+}
+
+void Individual::incrementInfectionDays()
+{
+	if (healthStatus == HealthStatus::Infected)
+	{
+		daysInfected++;
+	}
 }
