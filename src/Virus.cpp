@@ -1,10 +1,5 @@
 #include "Virus.h"
 
-std::random_device randomGen;
-std::mt19937 gen(randomGen());
-
-std::uniform_real_distribution<> decimalDis(0.0, 1.0);
-
 Virus::Virus(double rateTransmission, int incubatePeriod, int recoverPeriod, double mutation, double lethalityP)
 {
 	transmissionRate = rateTransmission;
