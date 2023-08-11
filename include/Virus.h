@@ -1,7 +1,6 @@
 #pragma once
 #ifndef VIRUS
 #define VIRUS
-
 #include <random>
 #include "Individual.h"
 #include "Enums.h"
@@ -13,6 +12,9 @@ public:
 	void mutate();
 	void spreadTo(Individual& individual);
 	void severity(Individual& individual);
+	void infect(Individual& individual);
+
+	// Getters
 	double getTranmissionRate();
 	int getIncubationRate();
 	int getRecoveryPeriod();
