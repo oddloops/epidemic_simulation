@@ -20,6 +20,8 @@ std::string healthToString(HealthStatus status)
 			return "Child";
 		case HealthStatus::Pregnacy:
 			return "Pregnacyl";
+		case HealthStatus::Recovered:
+			return "Recovered";
 		case HealthStatus::Deceased:
 			return "Deceased";
 		default:
