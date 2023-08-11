@@ -44,10 +44,10 @@ std::string infectionToString(InfectionStatus status)
 		case InfectionStatus::SevereSymptoms:
 			return "SevereSymptoms";
 		case InfectionStatus::CriticalCondition:
-			return "CriticalCondition";
+			return "CriticalCondition";/*
 		case InfectionStatus::Hospitalized:
 			return "Hospitalized";
-		case InfectionStatus::ICU:
+		case InfectionStatus::ICU:*/
 			return "ICU";
 		case InfectionStatus::Recovered:
 			return "Recovered";
