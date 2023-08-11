@@ -48,8 +48,5 @@ void Individual::updateInfectionStatus(InfectionStatus newIStatus)
 
 void Individual::incrementInfectionDays()
 {
-	if (healthStatus == HealthStatus::Infected)
-	{
-		daysInfected++;
-	}
+	daysInfected++;
 }
