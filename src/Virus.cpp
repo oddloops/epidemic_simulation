@@ -11,6 +11,9 @@ Virus::Virus(double rateTransmission, int incubatePeriod, int recoverPeriod, dou
 
 void Virus::mutate()
 {
+	std::random_device randomGen;
+	std::mt19937 gen(randomGen());
+	std::uniform_real_distribution<> decimalDis(0.0, 1.0);
 	double mutationP = decimalDis(gen);
 	if (mutationChance <= mutationP)
 	{
@@ -138,5 +141,5 @@ double Virus::getMutationChance()
 
 double Virus::getLethality()
 {
-	return leathality;
+	return lethality;
 }
