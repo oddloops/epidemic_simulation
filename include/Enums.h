@@ -13,6 +13,7 @@ enum class HealthStatus
 	Child,
 	Pregnacy,
 	Infected,
+	Recovered,
 	Deceased
 };
 
