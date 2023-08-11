@@ -25,82 +25,26 @@ int main()
 
     // Parse user inputs (Population, Simulation Days then virus information)
     // Population Size
-    do
-    {
-        std::cout << "Population Size: ";
-        std::cin >> populationSize;
-        if (populationSize < 1)
-        {
-            std::cout << "Please input a valid value > 0" << std::endl;
-        }
-    } while (populationSize < 1);
+    populationSize = getInputData<int>("Population Size: ", 1, std::numeric_limits<int>::max());
 
     // Simulation Time (in days)
-    do
-    {
-        std::cout << "Simulation Days: ";
-        std::cin >> simulationDays;
-        if (simulationDays < 1)
-        {
-            std::cout << "Please input a value > 0" << std::endl;
-        }
-    } while (simulationDays < 1);
+    simulationDays = getInputData<int>("Simulation duration (in days): ", 1, std::numeric_limits<int>::max());
 
     // Virus attributes
     // Transmission Rate
-    do
-    {
-        std::cout << "Virus transmission rate (0 to 1): ";
-        std::cin >> transmissionRate;
-        if (transmissionRate < 0 || transmissionRate > 1)
-        {
-            std::cout << "Please input a value between 0 to 1" << std::endl;
-        }
-    } while (transmissionRate < 0 || transmissionRate > 1);
+    transmissionRate = getInputData<double>("Virus transmission rate (0 to 1): ", 0, 1);
 
     // Incubation Period
-    do
-    {
-        std::cout << "Virus Incubation rate (in days): ";
-        std::cin >> incubationPeriod;
-        if (incubationPeriod < 0)
-        {
-            std::cout << "Please input a value >= 0" << std::endl;
-        }
-    } while (incubationPeriod < 0 );
+    incubationPeriod = getInputData("Virus Incubation rate (in days): ", 0, std::numeric_limits<int>::max());
 
     // Recovery Period
-    do
-    {
-        std::cout << "Virus Recovery rate (in days): ";
-        std::cin >> recoveryPeriod;
-        if (recoveryPeriod < 0)
-        {
-            std::cout << "Please input a value >= 0" << std::endl;
-        }
-    } while (recoveryPeriod < 0);
+    recoveryPeriod = getInputData<int>("Virus Recovery rate (in days): ", 0, std::numeric_limits<int>::max());
 
     // Mutation Chance
-    do
-    {
-        std::cout << "Virus Mutation Chance (0 to 1): ";
-        std::cin >> mutationChance;
-        if (mutationChance < 0 || mutationChance > 1)
-        {
-            std::cout << "Please input a value between 0 to 1" << std::endl;
-        }
-    } while (mutationChance < 0 || mutationChance > 1);
+    mutationChance = getInputData<double>("Virus Mutation Chance (0 to 1): ", 0, 1);
 
     // Lethality
-    do
-    {
-        std::cout << "Virus Lethality Rate (0 to 1): ";
-        std::cin >> lethality;
-        if (lethality < 0 || lethality > 1)
-        {
-            std::cout << "Please input a value between 0 to 1" << std::endl;
-        }
-    } while (lethality < 0 || lethality > 1);
+    lethality = getInputData<double>("Virus Lethality Rate (0 to 1): ", 0, 1);
 
     // Set up population
     for (i = 0; i < populationSize; i++)
@@ -153,7 +97,7 @@ int main()
         //test.mutate();
     }
 
-    for (Individual indi : population)
+    for (const Individual& indi : population)
     {
         if (indi.getHealthStatus() == HealthStatus::Infected
             || indi.getHealthStatus() == HealthStatus::Recovered
