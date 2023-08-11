@@ -1,5 +1,6 @@
 #include "Utils.h"
 
+// Statuses to string functions
 std::string healthToString(HealthStatus status)
 {
 	switch (status)
