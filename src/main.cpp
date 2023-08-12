@@ -7,17 +7,33 @@
 #include "Utils.h"
 #include "Virus.h"
 
-constexpr int N = 1000;
-constexpr int SIMULATION_DAYS = 365 * 100;
+//constexpr int N = 1000;
+//constexpr int SIMULATION_DAYS = 365 * 100;
 
 int main()
 {
+    // Random number generator
+    std::random_device randomDevice;
+    std::mt19937 gen(randomDevice());
+
+    // Age distributions
+    std::map<std::pair<int, int>, double> AGE_DISTRIBUTIONS = {
+        {{0, 15}, 0.10},
+        {{15, 64}, 0.65},
+        {{65, 100}, 0.25}
+    };
+
+    /*
+    * [0]: Infection Total
+    * [1]: Recovered Total
+    * [2]: Deceased Total
+    */
     int simulationData[3] = { 0 };
 
     std::vector<Individual> population;
 
     // User inputs
-    int i, populationSize = N, simulationDays = SIMULATION_DAYS;
+    int i, populationSize = 0, simulationDays = 0;
 
     // Virus user inputs
     double transmissionRate = 0, mutationChance = 0, lethality = 0;
@@ -49,16 +65,13 @@ int main()
     // Set up population
     for (i = 0; i < populationSize; i++)
     {
-        int age = std::rand() % 100;
-        population.push_back(Individual(i + 1, age, HealthStatus::Normal, InfectionStatus::Susceptible, 0));
+        population.push_back(Individual(i + 1, generateAge(gen, AGE_DISTRIBUTIONS), HealthStatus::Normal, InfectionStatus::Susceptible, 0));
     }
 
     // Set up virus
     Virus virus(transmissionRate, incubationPeriod, recoveryPeriod, mutationChance, lethality);
 
-    // Set up random number generators
-    std::random_device randomDevice;
-    std::mt19937 gen(randomDevice());
+    // Set up random number ranges
     std::uniform_int_distribution<> individuals(0, populationSize - 1);
     std::uniform_real_distribution<> randomInfection(0, 1);
 
@@ -99,6 +112,7 @@ int main()
 
     for (const Individual& indi : population)
     {
+        std::cout << indi.getAge() << std::endl;
         if (indi.getHealthStatus() == HealthStatus::Infected
             || indi.getHealthStatus() == HealthStatus::Recovered
             || indi.getHealthStatus() == HealthStatus::Deceased)
@@ -114,8 +128,8 @@ int main()
             }
         }
     }
-    std::cout << "Estimated Infected Total: " << simulationData[0] << " / " << N << std::endl;
-    std::cout << "Estimated Recovered Total: " << simulationData[1] << " / " << N << std::endl;
-    std::cout << "Estimated Deceased Total: " << simulationData[2] << " / " << N << std::endl;
+    std::cout << "Estimated Infected Total: " << simulationData[0] << " / " << populationSize << std::endl;
+    std::cout << "Estimated Recovered Total: " << simulationData[1] << " / " << populationSize << std::endl;
+    std::cout << "Estimated Deceased Total: " << simulationData[2] << " / " << populationSize << std::endl;
     return 0;
 }
