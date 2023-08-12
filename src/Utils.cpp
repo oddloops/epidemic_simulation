@@ -1,5 +1,27 @@
 #include "Utils.h"
 
+// Function declaration for generateAge
+int generateAge(std::mt19937& gen, const std::map<std::pair<int, int>, double>& distribution)
+{
+	std::uniform_real_distribution<double> agePercentage(0.0, 1.0);
+	double randomPercentage = agePercentage(gen);
+
+	double cumalitiveProbability = 0.0;
+	for (const auto& ages : distribution)
+	{
+		// Add the probability of the age group
+		cumalitiveProbability += ages.second;
+		if (randomPercentage <= cumalitiveProbability)
+		{
+			int ageLowerBound = ages.first.first;
+			int ageUpperBound = ages.first.second;
+			std::uniform_int_distribution<> age(ageLowerBound, ageUpperBound);
+			return age(gen);
+		}
+	}
+	return -1;
+}
+
 // Statuses to string functions
 std::string healthToString(HealthStatus status)
 {
