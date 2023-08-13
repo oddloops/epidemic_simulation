@@ -97,7 +97,7 @@ int main()
                 // Increase infection status of current infected person
                 virus.severity(person);
                 person.incrementInfectionDays();
-                //std::cout << "ID: " << person.getID() << " Infection: " << infectionToString(person.getInfectionStatus()) << std::endl;
+                std::cout << "ID: " << person.getID() << " Infection: " << infectionToString(person.getInfectionStatus()) << std::endl;
                 // Calculate possibility of spread for age groups
                 int ageGroup = getAgeRange(person.getAge());
                 int totalContacts = 0;
@@ -128,7 +128,7 @@ int main()
                 if (person.getInfectionStatus() == InfectionStatus::Susceptible)
                 {
                     double randomInfectChance = randomProb(gen);
-                    if (randomInfectChance < virus.getTranmissionRate())
+                    if (randomInfectChance < virus.getTranmissionRate() * randomProb(gen))
                     {
                         virus.infect(person);
                     }
