@@ -23,6 +23,13 @@ int main()
         {{65, 100}, 0.25}
     };
 
+    // Contact matrix (average contacts between age groups)
+    std::vector<std::vector<int>> contactMatrix = {
+        {10, 5, 2}, // for 0 - 14
+        {5, 10, 3}, // for 15 - 64
+        {2, 3, 5} // for 65 - 100
+    };
+
     /*
     * [0]: Infection Total
     * [1]: Recovered Total
@@ -33,7 +40,7 @@ int main()
     std::vector<Individual> population;
 
     // User inputs
-    int i, populationSize = 0, simulationDays = 0;
+    int i, j, k, populationSize = 0, simulationDays = 0;
 
     // Virus user inputs
     double transmissionRate = 0, mutationChance = 0, lethality = 0;
@@ -73,7 +80,7 @@ int main()
 
     // Set up random number ranges
     std::uniform_int_distribution<> individuals(0, populationSize - 1);
-    std::uniform_real_distribution<> randomInfection(0, 1);
+    std::uniform_real_distribution<> randomProb(0, 1);
 
     // Randomly infect an individual
     int randomInfected = individuals(gen); // Generate a random index
@@ -82,37 +89,61 @@ int main()
     // Begin the simulation loop
     for (i = 0; i <= simulationDays; i++)
     {
-        for (int k = 0; k < populationSize; k++) {
-            Individual& person = population[k]; // Use reference
+        for (j = 0; j < populationSize; j++) {
+            Individual& person = population[j]; // Use reference
 
             if (person.getHealthStatus() == HealthStatus::Infected)
             {
+                // Increase infection status of current infected person
                 virus.severity(person);
                 person.incrementInfectionDays();
+                //std::cout << "ID: " << person.getID() << " Infection: " << infectionToString(person.getInfectionStatus()) << std::endl;
+                // Calculate possibility of spread for age groups
+                int ageGroup = getAgeRange(person.getAge());
+                int totalContacts = 0;
+                for (k = 0; k < 3; k++)
+                {
+                    totalContacts += contactMatrix[ageGroup][k];
+                }
+                double randomInfectionChance = randomProb(gen);
+                if (j - 1 >= 0 && population[j - 1].getInfectionStatus() == InfectionStatus::Susceptible)
+                {
+                    double randomInfectionChanceNeighbor = randomProb(gen); // Separate random number for neighbor infection check
+                    if (randomInfectionChanceNeighbor < (virus.getTranmissionRate() * contactMatrix[ageGroup][getAgeRange(population[j - 1].getAge())] / totalContacts))
+                    {
+                        virus.spreadTo(population[j - 1]);
+                    }
+                }
+                if (j + 1 < populationSize && population[j + 1].getInfectionStatus() == InfectionStatus::Susceptible)
+                {
+                    double randomInfectionChanceNeighbor = randomProb(gen); // Separate random number for neighbor infection check
+                    if (randomInfectionChanceNeighbor < (virus.getTranmissionRate() * contactMatrix[ageGroup][getAgeRange(population[j + 1].getAge())] / totalContacts))
+                    {
+                        virus.spreadTo(population[j + 1]);
+                    }
+                }
 
-                if (k - 1 >= 0)
-                {
-                    virus.spreadTo(population[k - 1]);
-                }
-                if (k + 1 < populationSize)
-                {
-                    virus.spreadTo(population[k + 1]);
-                }
             }
             else {
-                double randomInfectChance = randomInfection(gen);
-                if (randomInfectChance < 0.0000002)
+                if (person.getInfectionStatus() == InfectionStatus::Susceptible)
                 {
-                    virus.infect(person);
+                    double randomInfectChance = randomProb(gen);
+                    if (randomInfectChance < virus.getTranmissionRate())
+                    {
+                        virus.infect(person);
+                    }
                 }
             }
         }
-        //test.mutate();
+        double randomMutation = randomProb(gen);
+        if ((1 - randomMutation) < virus.getMutationChance())
+        {
+            virus.mutate();
+        }
     }
 
     for (const Individual& indi : population)
     {
-        std::cout << indi.getAge() << std::endl;
         if (indi.getHealthStatus() == HealthStatus::Infected
             || indi.getHealthStatus() == HealthStatus::Recovered
             || indi.getHealthStatus() == HealthStatus::Deceased)
@@ -122,12 +153,13 @@ int main()
             {
                 simulationData[1]++;
             }
-            else if (indi.getHealthStatus() == HealthStatus::Deceased)
+            if (indi.getHealthStatus() == HealthStatus::Deceased)
             {
                 simulationData[2]++;
             }
         }
     }
+    std::cout << "" << std::endl;
     std::cout << "Estimated Infected Total: " << simulationData[0] << " / " << populationSize << std::endl;
     std::cout << "Estimated Recovered Total: " << simulationData[1] << " / " << populationSize << std::endl;
     std::cout << "Estimated Deceased Total: " << simulationData[2] << " / " << populationSize << std::endl;
