@@ -22,6 +22,26 @@ int generateAge(std::mt19937& gen, const std::map<std::pair<int, int>, double>& 
 	return -1;
 }
 
+int getAgeRange(int age)
+{
+	if (age >= 0 && age < 15)
+	{
+		return 0;
+	}
+	else if (age < 65)
+	{
+		return 1;
+	}
+	else if (age <= 100)
+	{
+		return 2;
+	}
+	else {
+		return -1;
+	}
+	return -1;
+}
+
 // Statuses to string functions
 std::string healthToString(HealthStatus status)
 {

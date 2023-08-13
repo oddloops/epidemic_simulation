@@ -40,6 +40,7 @@ T getInputData(const std::string& prompt, T minValue, T maxValue)
 
 // Implicit declaration to generate a random age based on distribution
 int generateAge(std::mt19937& gen, const std::map<std::pair<int, int>, double>& distribution);
+int getAgeRange(int age);
 
 // Implicit declarations for statuses to string
 std::string healthToString(HealthStatus status);
