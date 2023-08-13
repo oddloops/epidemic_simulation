@@ -76,11 +76,6 @@ void Virus::severity(Individual& individual)
             {
                 individual.updateInfectionStatus(InfectionStatus::CriticalCondition);
             }
-            else // infectionSeverity >= SEVERITY_CRITICAL
-            {
-                individual.updateHealthStatus(HealthStatus::Deceased);
-                individual.updateInfectionStatus(InfectionStatus::Deceased);
-            }
         }
     }
 }
